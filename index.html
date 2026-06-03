@@ -7,10 +7,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Gulzar&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-green: #004d26; /* اسکرین شاٹ والا ہرا رنگ */
-      --accent-gold: #ffd700;   /* سنہرا رنگ */
-      --bg-color: white;      /* ہلکا سبز بیک گراؤنڈ */
-      --card-bg: #cae8eb;       /* کارڈ کا رنگ */
+      --primary-green: #004d26; 
+      --accent-gold: #ffd700;   
+      --bg-color: white;      
+      --card-bg: #cae8eb;       
     }
 
     body { 
@@ -22,7 +22,6 @@
       justify-content: center;
     }
 
-    /* مین کارڈ کنٹینر */
     .container {
       max-width: 360px;
       width: 100%;
@@ -35,30 +34,41 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
-    /* اوپر کا لوگو والا حصہ */
     .header-section {
-      margin-bottom: 50px;
+      margin-bottom: 30px;
     }
 
-img {
+    img {
       width: 320px;
       height: 140px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       margin: 10px auto;
-      display: block; /* سینٹر کرنے کے لیے */
+      display: block; 
     }
 
     .main-title {
       background-color: black;
       color: white;
       padding: 1px 50px;
-      border-radius: 40px 40px;
+      border-radius: 40px;
       display: inline-block;
       font-size: 22px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
-    /* بٹنوں کی ترتیب (دو کالمز) */
+    .search-box {
+      width: 90%;
+      padding: 10px;
+      margin: 10px auto 20px auto;
+      border: 2px solid var(--primary-green);
+      border-radius: 20px;
+      font-family: 'Gulzar', serif;
+      font-size: 16px;
+      display: block;
+      outline: none;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    }
+
     .btn-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -80,6 +90,15 @@ img {
 
     button:active { transform: scale(0.95); }
 
+    .download-main-btn {
+      grid-column: 1 / span 2;
+      background: var(--primary-green);
+      color: white;
+      font-weight: bold;
+      border: 2px solid var(--accent-gold);
+      margin-top: 15px;
+    }
+
     .page { display: none; animation: fadeIn 0.5s; }
     #home-page { display: block; }
 
@@ -87,7 +106,6 @@ img {
       from { opacity: 0; } to { opacity: 1; }
     }
 
-    /* فوٹر اور رابطہ */
     .footer-box {
       margin-top: 30px;
       padding: 15px;
@@ -97,24 +115,7 @@ img {
       color: #333;
     }
 
-    /* پی ڈی ایف ویور */
-    #pdf-view-page {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #000;
-      z-index: 9999;
-    }
-
-    iframe { width: 100%; height: calc(100% - 60px); border: none; }
-    
-    .viewer-header {
-      height: 60px; background: var(--primary-green);
-      display: flex; justify-content: space-between;
-      align-items: center; padding: 0 15px; color: white;
-    }
-  .btn-blue {
+    .btn-blue {
       display: flex;
       gap: 10px;
       justify-content: center;
@@ -127,18 +128,38 @@ img {
     }
 
     .btn-blue button {
-      width: 100%; /* لنک کے اندر بٹن پوری جگہ لے گا */
+      width: 100%; 
       padding: 10px 5px;
       font-size: 14px;
     }
-.back-btn { background: #555; width: 100%; margin-top: 20px; 
+    
+    .back-btn { background: #555; width: 100%; margin-top: 20px; }
+
+    /* ڈاؤن لوڈ لسٹ کے لیے نیا اسٹائل (تاکہ بٹن اور ڈیلیٹ آپشن آمنے سامنے رہیں) */
+    .download-item-wrapper {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      width: 100%;
+    }
+    .download-book-btn {
+      flex: 4;
+    }
+    .remove-book-btn {
+      flex: 1;
+      background: #cc0000;
+      color: white;
+      font-size: 14px;
+      padding: 12px 1px;
+    }
+    .remove-book-btn:active {
+      background: #990000;
     }
   </style>
 </head>
 <body>
 <div class="container">
   
-  <!-- ہوم پیج -->
   <div id="home-page" class="page">
      <button style="padding: 1.0px 50px; margin: 10px">درس اسلامی</button>
     <div class="header-section">
@@ -148,18 +169,15 @@ img {
     </div>
 
     <div class="btn-container">
-  <!-- درس نظامی والا بٹن جماعت والے صفحے پر لے جائے گا -->
-  <button onclick="showJamatPage()">درس نظامی</button>
-  
-  <!-- حدیث مبارکہ پر کلک کرنے سے براہ راست حدیث کی کتابیں نظر آئیں گی -->
-  <button onclick="renderBooks('hadees', 'cat')">حدیث مبارکہ</button>
-  
-  <button onclick="renderBooks('kitaben', 'cat')">کتابوں کا مجموعہ</button>
-  
-  <button onclick="showtaqreerPage()">نعت و تقریر کی کتابیں</button>
-  <button onclick="renderBooks('msail', 'cat')">ضروری مساںٔلیں</button>
-  <button onclick="renderBooks('dua', 'cat')">دعائیں</button>
-</div>
+      <button onclick="showJamatPage()">درس نظامی</button>
+      <button onclick="renderBooks('hadees', 'cat')">حدیث مبارکہ</button>
+      <button onclick="renderBooks('kitaben', 'cat')">کتابوں کا مجموعہ</button>
+      <button onclick="showtaqreerPage()">نعت و تقریر کی کتابیں</button>
+      <button onclick="renderBooks('msail', 'cat')">ضروری مساںٔلیں</button>
+      <button onclick="renderBooks('dua', 'cat')">دعائیں</button>
+      
+      <button class="download-main-btn" onclick="showDownloadPage()">📥 ڈاؤن لوڈ کی گئی کتابیں</button>
+    </div>
     
     <div class="footer-box">
       <p style="color: red; font-weight: bold;">نوٹ:خواہش مندحضرات اپنی کتابیں پبلش کروانے کے لیے رابطہ کریں</p>
@@ -172,171 +190,345 @@ img {
     </div>
   </div>
 
-  <!-- جماعت پیج -->
   <div id="jamat-page" class="page">
     <div class="main-title">جماعت منتخب کریں</div>
+    <input type="text" class="search-box" id="search-jamat" placeholder="جماعت تلاش کریں..." oninput="filterButtons('jamat-page', this.value)">
     <div class="btn-container">
       <button onclick="renderBooks('اعدادیہ','jamat')">اعدادیہ</button>
       <button onclick="renderBooks('اولیٰ', 'jamat')">اولیٰ</button>
       <button onclick="renderBooks('ثانیہ', 'jamat')">ثانیہ</button>
       <button onclick="renderBooks('ثالثہ', 'jamat')">ثالثہ</button>
       <button onclick="renderBooks('رابعہ', 'jamat')">رابعہ</button>
-       <button onclick="renderBooks('خامسہ', 'jamat')">خامسہ</button>
-       <button onclick="renderBooks('سادسہ', 'jamat')">سادسہ</button>
-       <button onclick="renderBooks('سابعہ','jamat')">سابعہ</button>
+      <button onclick="renderBooks('خامسہ', 'jamat')">خامسہ</button>
+      <button onclick="renderBooks('سادسہ', 'jamat')">سادسہ</button>
+      <button onclick="renderBooks('سابعہ','jamat')">سابعہ</button>
     </div>
     <button class="back-btn" onclick="showHomePage()">🏠 ہوم پیج</button>
   </div>
-<div id="taqreer-page" class="page">
-   <div class="main-title">کتاب منتخب کریں</div>
-   <div class="btn-container">
-     <button onclick="renderBooks('نعت','taqreer')">نعت کی کتابیں</button>
-     <button onclick="renderBooks('تقریر','taqreer')">تقریر کی کتابیں</button>
-   </div>
-      <button class="back-btn" onclick="showtaqreerPage()">🏠 ہوم پیج</button>
-</div>
-  <!-- کتاب لسٹ پیج -->
+  
+  <div id="taqreer-page" class="page">
+     <div class="main-title">کتاب منتخب کریں</div>
+     <input type="text" class="search-box" id="search-taqreer" placeholder="نوعیت تلاش کریں..." oninput="filterButtons('taqreer-page', this.value)">
+     <div class="btn-container">
+       <button onclick="renderBooks('نعت','taqreer')">نعت کی کتابیں</button>
+       <button onclick="renderBooks('تقریر','taqreer')">تقریر کی کتابیں</button>
+     </div>
+     <button class="back-btn" onclick="showHomePage()">🏠 ہوم پیج</button>
+  </div>
+  
   <div id="books-list-page" class="page">
     <h2 id="list-title" style="color: var(--primary-green)">کتابیں</h2>
+    <input type="text" class="search-box" id="search-books" placeholder="کتاب کا نام تلاش کریں..." oninput="filterBooksList(this.value)">
     <div id="books-list" class="btn-container"></div>
     <button class="back-btn" id="dynamic-back-btn">پیچھے جائیں</button>
   </div>
 
+  <!-- ڈاؤن لوڈ شدہ کتابوں کا صفحہ (یہاں اب گرڈ کے بجائے سنگل کالم لسٹ استعمال ہوگی تاکہ ڈیلیٹ بٹن فٹ آئے) -->
+  <div id="download-page" class="page">
+    <div class="main-title">ڈاؤن لوڈ کتب منڈل</div>
+    <input type="text" class="search-box" id="search-downloads" placeholder="ڈاؤن لوڈ کتاب تلاش کریں..." oninput="filterDownloadsList(this.value)">
+    <div id="downloads-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;"></div>
+    <p id="no-download-msg" style="margin-top: 20px; color: #555;">ابھی کوئی کتاب ڈاؤن لوڈ نہیں کی گئی۔</p>
+    <button class="back-btn" onclick="showHomePage()">🏠 ہوم پیج</button>
+  </div>
+
 </div>
 
-<!-- پی ڈی ایف ویور -->
-<div id="pdf-view-page">
-  <div class="viewer-header">
-    <span id="viewing-book-title">لوڈ ہو رہا ہے...</span>
-    <button onclick="closeViewer()" style="background:red; border:none; color:white; padding:5px 10px; border-radius:5px;">بند کریں</button>
-  </div>
-  <iframe id="pdf-frame" src=""></iframe>
-</div>
 <script>
+  // تمام کتابوں کے لوکل راستے
   const allBooks = [
-    {title: "گلزاردبستاں۔", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1QaXSNa565dAvasjIIZByVZ40lvZWL_gG/preview"},
-    {title: "منہاج العربیہ۔اول", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1gFN7wr3FMSPZxYWC6twePittOLb4nFop/preview"},
-    {title: "فارسی کی پہلی", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1OFPNK20yHzz9tOSBSgKOIKqU2Pzetrxa/preview"},
-    {title: "تسہیل المصادر", cat: "dars", jamat: "اعدادیہ", link:"https://drive.google.com/file/d/1zrybm_XCrzjkXw4TavfiawG9gCVslenq/preview"},
-    {title: "فارسی قواعد وانشا", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1FdqK1srzZ1kGKTBU2yZnzT4KBjY4HsPO/preview"},
-    {title: "تواریخ حبیب الہ", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1MJY8RoXqmauismh1TAcdt51G9RBfZfzy/preview"},
-    {title: "کتاب العقاعد", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1p131Q9aFUST6DXys_kA_RuZADIujUvCp/preview"},
-    {title: "فارسی کی دوسری", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1JrHyz9XTf7VMuxeIg_CkBKlnA-VthDqB/preview"},
-    {title: "منہاج العربیہ ۔دوم", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1YleEWSEBYwKnVEHaUVST50p3UVjiCRTi/preview"},
-    {title: "دراسۃ النحو", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1hcqE8jM6UgQdA6LHfGD2D-cxRmjirwo9/preview"},
-    {title: "معرفۃ التجوید", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1NUHcuQHkTiQkKzjn3byyT38Sb3P1ctIQ/preview"},
-    {title: "سیرت خلفاےءراشدین", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1NM_PYTX5tXkjki5UYdMsm0Ga6I_9EgrS/preview"},
-    {title: "انوار شریعت", cat: "dars", jamat: "اعدادیہ", link: "https://drive.google.com/file/d/1fLROpfFIAmeZAoQg9gpijX_Y-oSWDfXK/preview"},
-    {title: "فیض الادب اول ودوم", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1NUHcuQHkTiQkKzjn3byyT38Sb3P1ctIQ/preview"},
-    {title: "منہا العربیہ سوم", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1v1PWHU8EB9I5GvLuG10bpmMDij1oe9ca/preview"},
-    {title: "بدایۃ الصرف", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1aR9aeh7vddP4BC_fEmm2FUhWNYekj71R/preview"},
-    {title: "قواعد النحو", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1XrG8o0wADBWxr23NZ0rv2D_yrRcQq1GD/preview"},
-    {title: "نورالادب شرح", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1Gz9A9Ps7DlmjwU-NM-9SOUXqP6VDf5GJ/preview"},
-    {title: "پنج گنج", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/19qJj9lFiwW9_0L_OFifXy1ZZdCW0Czf4/preview"},
-    {title: "نحو میر", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1ZFhJC0olQp-zDizhmI7buH_S4SNtPpDT/preview"},
-    {title: "گلستاں مترجم", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1negNQRebSAHDsM7dZhFFXhHaujdmeM6m/preview"},
-    {title: "اسلامی اخلاق وآداب", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1EsH3v5240qefAzi745J34PKvN_xX8kJw/preview"},
-    {title: "صرف میر", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1DIQwkghuUH5KTKR_ZFCRGLWucYG_Ix0e/preview"},
-    {title: "بوستان سعدی", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1CqJC69uUG-ijq90pwAb01cx7xuxU8OJE/preview"},
-    {title: "سخن نو", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/12_mTfNoJQcKRCJuyXCTXpXDAfZoHFwX4/preview"},
-    {title: "قواعد الصرف اول", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1LuV2c04lv3QisGZhOWzsuaiFkqvBR7zf/preview"},
-    {title: "مصبا ح الانشاء", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1HviS4L0Vi9dv7yCVNi_AoUq17fcok80W/preview"},
-    {title: "القراءۃالرشیدہ", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1NmkFJJqM2nxOqAbIy9jF3lfhCSYHlwCW/preview"},
-    {title: "معرفۃ التجوید", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1NUHcuQHkTiQkKzjn3byyT38Sb3P1ctIQ/preview"},
-    {title: " النحوالواضع", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1CruBk_2z0p-iZiqnDBxLT6y21ayY_BNo/preview"},
-    {title: "بهار شریعت", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1HzuYyoa0d9t73n8XAl5zkChhOPNTuwaF/preview"},
-    {title: "قانون شریعت", cat: "dars", jamat: "اولیٰ", link: "https://drive.google.com/file/d/1CruBk_2z0p-iZiqnDBxLT6y21ayY_BNo/preview"},
-    {title: "ھدایۃ النحو", cat: "dars", jamat: "ثانیہ", link: "https://drive.google.com/file/d/1Ba9VvWbPbII1d9LkbXEdVSvlfpsSPjOI/preview"},
-    {title: "علم الصیغہ", cat: "dars", jamat: "ثانیہ", link: "https://drive.google.com/file/d/11LmLnV-8kOHCePKF06JvKSrbkaVI4dgW/preview"},
-    {title: "مجانی الادب", cat: "dars", jamat: "ثانیہ", link: "https://drive.google.com/file/d/1ncoC0gfxglmRYZ8rv83RcTs2RgImS7eC/preview"},
-    {title: "نور الایضاح", cat: "dars", jamat: "ثانیہ", link: "https://drive.google.com/file/d/1PsAyJCULqPK3MNeE8p6_0lwnnt8wXPK_/preview"},
-    {title: "قواعد املا وانشاء", cat: "dars", jamat: "ثانیہ", link: "https://drive.google.com/file/d/1lCI5-N1Alb6Qbp2o7j4O-OsMiwqvWVIO/preview"},
-    {title: "مصباح الانشاء اول", cat: "dars", jamat: "ثانیہ", link: "https://drive.google.com/file/d/1HviS4L0Vi9dv7yCVNi_AoUq17fcok80W/preview"},
-    {title: "ازہارالعرب", cat: "dars", jamat: "ثانیہ", link: "https://drive.google.com/file/d/1bh1i7Um-ISNrRpQEL0lJNi2aaIefHuCV/preview"},
-    {title: "مختصر القدوری", cat: "dars", jamat: "ثالثہ", link: "https://drive.google.com/file/d/1U9cK_ECcHp25jYbyvsqtHafuoOsrYQQW/preview"},
-    {title: "کافیۃ النحو", cat: "dars", jamat: "ثالثہ", link: "https://drive.google.com/file/d/1EpLY5naM0taLJIOX1fg-PX-blGkowndj/preview"},
-    {title: "شرح التھذیب", cat: "dars", jamat: "ثالثہ", link: "https://drive.google.com/file/d/1-ZN2CIqZ_qwoKM5ArMSZkCGUOjWOpnbJ/preview"},
-    {title:"مصباح الانشاء ثانی", cat: "dars", jamat: "ثالثہ", link: "https://drive.google.com/file/d/17QvowyP-Y01tQ5lCuHK43zsonYdqLKVd/preview"},
-    {title: "دروس البلاغۃ", cat: "dars", jamat: "ثالثہ", link: "https://drive.google.com/file/d/19K1C0q6kAwzYwHAWJkiwaGn_h-b3W4j7/preview"},
-    {title: "تاریخ اسلام اول", cat: "dars", jamat: "ثالثہ", link: "https://drive.google.com/file/d/1Qfpap-t-RZKksrhyaqlj4KgoW1FJPFxW/preview"},
-    {title: "قطبی تصدیقات", cat: "dars", jamat: "ثالثہ", link: "https://drive.google.com/file/d/1LCr2PK7hp9VRxX-slk4hKzFzmVqle9Si/preview"},
-    {title: "معین العروض", cat: "dars", jamat: "ثالثہ", link: "https://drive.google.com/file/d/1ZDiO5mRxMl1F4ShbV227qRW-eYw2p3Wh/preview"},
-    {title: "ریاض الصالحین", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/1POTxuc3euyNi1itPZQJBukEwfKThDsV5/preview"},
-    {title: "منھاج العابدین", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/10ZhL4SYymLqPhGudzs7rRaCx2raYOaoW/preview"},
-    {title: "قدوری ", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/1U9cK_ECcHp25jYbyvsqtHafuoOsrYQQW/preview"},
-    {title: "قطبی تصورات", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/1ASUXI9lzBKUsT80KffI4-5xfid63aLeM/preview"},
-    {title: "میر قطبی", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/11-R-kWOfkMxfOKwZ5j9qEUvXsM8MnQJO/preview"},
-    {title: "الادب الجمیل", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/1nEM3dubsCfcPfgc7iwaPhQUWypro0ALf/preview"},
-    {title: "اصول شّاشی", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/1XQmb1AuF2zf0TV5xa5Z8AM7FYAN_EwCP/preview"},
-    {title: "فواںٔد ِمکیہ", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/1B2SnMZOPlIgsL8xm81s4y0VxMP3ARc7T/preview"},
-    {title: "ھدایۃ الحکمہ", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/1rcYp0XJSpBvG3y1mAtaHyJ_8RfEUGerL/preview"},
-    {title: "دیوان المتنبّی", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/1Cg6xmR7K_-pW-SrYGAmVxBTUA4AImmDE/preview"},
-    {title: "جامع الوقف", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/14e6KlG-fKwIty9PBR9ZHYB1W_tz0E4uS/preview"},
-    {title: "مصباح الانشاء", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/17QvowyP-Y01tQ5lCuHK43zsonYdqLKVd/preview"},
-    {title: "تاریخ اسلام", cat: "dars", jamat: "رابعہ", link: "https://drive.google.com/file/d/1G4pmdCaBcEMVBcj2o5kzOh10n4HrhQID/preview"},
-    {title: "الفوزالکبیر", cat: "dars", jamat: "خامسہ", link: "https://drive.google.com/file/d/1BVyOGm94wg93IIG5Jx-BBgJiaKmEDzln/preview"},
-    {title: "شرح العقاعد نسفی", cat: "dars", jamat: "خامسہ", link: "https://drive.google.com/file/d/155iX56a6ltrM8TuRa7_kDUflBcV8mUMC/preview"},
-    {title: "المعتقد المنتقد", cat: "dars", jamat: "خامسہ", link: "https://drive.google.com/file/d/1H893kDibAo_811DVvHk-mRcyY_Bdr50y/preview"},
-    {title: "حدوث الفِتن", cat: "dars", jamat: "خامسہ", link: "https://drive.google.com/file/d/18upLul-mQMpb3olhhIQ3k8ZHMVJPCQCZ/preview"},
-    {title: "الرشیدیہ", cat: "dars", jamat: "خامسہ", link: "https://drive.google.com/file/d/1NvPuS7T5gFdDlTosq3lA3OY1Ry47SlEG/preview"},
-    {title: "المدیح النبوی", cat: "dars", jamat: "خامسہ", link: "https://drive.google.com/file/d/1zxLe2QI8yka0YyHpXKZuqubqzwj-ZogZ/preview"},
-    {title: "مصباح الانشاء ثانی", cat: "dars", jamat: "خامسہ", link: "https://drive.google.com/file/d/17QvowyP-Y01tQ5lCuHK43zsonYdqLKVd/preview"},
-    {title: "جلالین شریف", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/13a-dOclQf1nEOC9Y5hemkjZW7QEGT9mu/preview"},
-    {title: "زبدۃالاتقان", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/1m-PqCuBCHxPT3GeCNZFqsKzZ_V2hBOXD/preview"},
-    {title: "الهد١يه", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/1cnpSHLZX_Tht29aFrt6PA6ASMbQ0oVD3/preview"},
-    {title: "بهار شريعت", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/1-2QT7xpzzqfk0jCPDwCGSPqJHN6bahJU/preview"},
-    {title: "مختصر المعانی", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/1CW5n9xHzcjFOkYfBIuS6InZtBtErjo3Z/preview"},
-    {title: "مقامات الحریری", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/1OGTGWw91RwNGRDTvLYS4K_rfvH9JLoQ8/preview"},
-    {title: "توضیحات الانشاء", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/1Ld93qURNRKnGXGCweNxl5SScSufehElC/preview"},
-    {title: "تدوین حدیث", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/1gHB9yEUDjKd8fB8rvBRl_ribQofsZadU/preview"},
-    {title: "سراجی", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/14KQ01V2jDz8EGwf4-QRGkI-tUGjT3QH8/preview"},
-    {title: "البلاغۃ الواضحۃ", cat: "dars", jamat: "سادسہ", link: "https://drive.google.com/file/d/1YzKxUPRjHb-eiB_nk2nZfMkrZqH500d6/preview"},
-    {title: "ترمزی شریف", cat: "dars", jamat: "سابعہ", link: "https://drive.google.com/file/d/1Q-nmJhQs4xz2TX82uJKPoYwVbgBThE9f/preview"},
-    {title: "حسامی", cat: "dars", jamat: "سابعہ", link: "https://drive.google.com/file/d/1OKoLiIoFLmFwCBscMaBwyRGaUItezjhq/preview"},
-    {title: "دیوان حماسہ", cat: "dars", jamat: "سابعہ", link: "https://drive.google.com/file/d/1wTLpZY-558OGKv2o_yOveGfoW43Yx3EA/preview"},
-    {title: "مصباح الانشاء ثالث", cat: "dars", jamat: "سابعہ", link: "https://drive.google.com/file/d/144yAwGkupc3oMG8SD4Sul2WaDQcq0LOq/preview"},
-    {title: "المبین", cat: "dars", jamat: "سابعہ", link: "https://drive.google.com/file/d/1OElzzo2tgOqvPzkD6TNKdktGNR_Rvlrn/preview"},
-    {title: "ابو داؤد شریف", cat: "dars", jamat: "سابعہ", link: "https://drive.google.com/file/d/1jYjktjmyMYi-eEJeVvDJTRPRX-Vf8oZV/preview"},
-    {title: "تو ضیح", cat: "dars", jamat: "سابعہ", link: "https://drive.google.com/file/d/1dZQR5NICgW_dAnjNjFFEtL9J7Vzs9KfL/preview"},
-    {title: "حداںٔق بخشش", cat: "taqreer", jamat: "نعت", link: "https://drive.google.com/file/d/1fJ3pX1t9opd21biyB5vpc8iDUgkUCgax/preview"},
-    {title: "سامان بخشش", cat: "dars", jamat: "نعت", link: "https://drive.google.com/file/d/1hOO3dH9uz-Xy_28oGkj7sPZ6V_h8RdyL/preview"},
-    {title: "کلیات حسن", cat: "dars", jamat: "نعت", link: "https://drive.google.com/file/d/1dtCluxci52n817jHUGemaJppOlwNEiNc/preview"},
-    {title: "سلاموں کا مجموعہ", cat: "dars", jamat: "نعت", link: "https://drive.google.com/file/d/18X3CtohbuBLfVl8o7eAIa_SaLF-QIKW8/preview"},
-    {title: "خطبات بنگال", cat: "taqreer", jamat: "تقریر", link: "https://drive.google.com/file/d/1EDMm1XhycKT2LyvFPpAzfaTBBDRfFHP6/preview"},
-    {title: "خطبات نیپال", cat: "dars", jamat: "تقریر", link: "https://drive.google.com/file/d/1-MhncoL_-Sv_yT82o16LfPz_43jntViJ/preview"},
-    {title: "نعیمی خطبات", cat: "dars", jamat: "تقریر", link: "https://drive.google.com/file/d/1x4TwZaSQtIHfl60E_A-ojIB3GTrIm3Hf/preview"},
-    {title: "مشکوٰۃ شریف", cat: "hadees", jamat: "", link: "URL"},
-    {title: "مسنون دعائیں", cat: "dua", jamat: "", link: "URL"}
+    {title: "فارسی کی پہلی", cat: "dars", jamat: "اعدادیہ", link: "adadia/farsi-ki-pahli.pdf"},
+    {title: "شرح فارسی کی پہلی", cat: "dars", jamat: "اعدادیہ", link: "adadia/sharh-farsi-ki-pahli.pdf"},
+    {title: "گلزاردبستاں", cat: "dars", jamat: "اعدادیہ", link: "adadia/Gulzar-dbista_compressed.pdf"},
+    {title: "شرح گلزاردبستاں۔", cat: "dars", jamat: "اعدادیہ", link: "adadia/sharah-gulzare-dabista.pdf"},
+    {title: "منہاج العربیہ۔اول", cat: "dars", jamat: "اعدادیہ", link: "adadia/minhajul_arabia.pdf"},
+    {title: "شرح منہاج العربیہ اول", cat: "dars", jamat: "اعدادیہ", link: "adadia/sharh-minhazul-arebia-awwal(1).pdf"},
+    {title: "تسہیل المصادر", cat: "dars", jamat: "اعدادیہ", link: "adadia/تسہیل-المصادر.pdf"},
+    {title: "شرح تسہیل المصادر", cat: "dars", jamat: "اعدادیہ", link: "adadia/sharah-tasheelul-masadir.pdf"},
+    {title: "فارسی قواعد وانشاء", cat: "dars", jamat: "اعدادیہ", link: "adadia/farsi-qwaid-insha.pdf"},
+    {title: "شرح فارسی قواعدوانشاء", cat: "dars", jamat: "اعدادیہ", link: "adadia/sharah-farsi-qawaid-insha.pdf"},
+    {title: "تواریخ حبیب الہ", cat: "dars", jamat: "اعدادیہ", link: "adadia/twarikh-e-habeeb-ilah.pdf"},
+    {title: "کتاب العقاںٔد", cat: "dars", jamat: "اعدادیہ", link: "adadia/kitab-ul-aqiad.pdf"},
+    {title: "فارسی کی دوسری", cat: "dars", jamat: "اعدادیہ", link: "adadia/فارسی-کی-دوسری.pdf"},
+    {title: "شرح فارسی کی دوسری", cat: "dars", jamat: "اعدادیہ", link: "شرح-فارسی-کی-دوسری.pdf"},
+    {title: "دراسۃ الصرف", cat: "dars", jamat: "اعدادیہ", link: "adadia/dirastus-sarf.pdf"},
+    {title: "حل تمارین دراسۃ الصرف", cat: "dars", jamat: "اعدادیہ", link: "adadia/hal-tamaren-dirastus-sarf.pdf"},
+    {title: "منہاج العربیہ ۔دوم", cat: "dars", jamat: "اعدادیہ", link: "adadia/minhajul_arabiya.pdf"},
+    {title: "شرح منہاج العربیہ دوم", cat: "dars", jamat: "اعدادیہ", link: "adadia/sharah-minhazul-arebia-doom.pdf"},
+    {title: "دراسۃ النحو", cat: "dars", jamat: "اعدادیہ", link: "adadia/دراسۃالنحو.pdf"},
+    {title: "سیرت خلفاےء راشدین", cat: "dars", jamat: "اعدادیہ", link: "adadia/seerat-khulfae-rashideen.pdf"},
+    {title: "نظام شریعت", cat: "dars", jamat: "اعدادیہ", link: "adadia/نظام-شریعت.pdf"},
+    {title: "انوار شریعت", cat: "dars", jamat: "اعدادیہ", link: "adadia/anwar-shareeyt.pdf"},
+    {title: "عروس الادب", cat: "dars", jamat: "اعدادیہ", link: "adadia/عروس-الادب.pdf"},
+    {title: "تمرین الصرف", cat: "dars", jamat: "اعدادیہ", link: "adadia/تمرین-الصرف.pdf"},
+    {title: "سیرت رسول اکرم", cat: "dars", jamat: "اعدادیہ", link: "adadia/سیرت-رسول-اکرم.pdf"},
+    {title: "مفتاح العربیہ اول", cat: "dars", jamat: "اعدادیہ", link: "adadia/miftahul-arebia-auwwal.pdf"},
+    {title: "مفتاح العربیہ دوم", cat: "dars", jamat: "اعدادیہ", link: "adadia/miftahul-arebia-doom.pdf"},
+    {title: "شرح-مفتاح-العربیہ-اول-دوم", cat: "dars", jamat: "اعدادیہ", link: "adadia/شرح-مفتاح-العربیہ-اول-دوم.pdf"},
+    {title: "اساس النحو", cat: "dars", jamat: "اعدادیہ", link: "adadia/asasun-nahw.pdf"},
+    {title: "علم النحو", cat: "dars", jamat: "اعدادیہ", link: "adadia/ilme-nahw.pdf"},
+    {title: "ابتداقوعد الصراول", cat: "dars", jamat: "اعدادیہ", link: "adadia/ibtdae-qawaid-sarf-auwwal.pdf"},
+    {title: "ابتداقوعدالصرف دوم ", cat: "dars", jamat: "اعدادیہ", link: "adadia/ibtdae-qawaid-sarf-doom.pdf"},
+    {title: "جنّتی زیور", cat: "dars", jamat: "اعدادیہ", link: "adadia/jannati-zewar.pdf"},
+    {title: "خواتین کے مخصوص مساںٔل", cat: "dars", jamat: "اعدادیہ", link: "adadia/khawateen-makhsoos-masail.pdf"},
+    
+    {title: "نحومیر فارسی", cat: "dars", jamat: "اولیٰ", link: "Ula/nahwmeer-1.pdf"},
+    {title: "نحومیرمترجم", cat: "dars", jamat: "اولیٰ", link: "Ula/nahw-meer-mutarjim.pdf"},
+    {title: "میزان الصرف", cat: "dars", jamat: "اولیٰ", link: "Ula/meezanus-sarf.pdf"},
+    {title: "شرح میزان الصرف", cat: "dars", jamat: "اولیٰ", link: "Ula/sharh-meezan-assarf.pdf"},
+    {title: "پنج گنج", cat: "dars", jamat: "اولیٰ", link: "Ula/PANJ-GANJ-1.pdf"},
+    {title: "شرح پنج گنج", cat: "dars", jamat: "اولیٰ", link: "Ula/sharh-panjganj.pdf"},
+    {title: "فیض الادب اول", cat: "dars", jamat: "اولیٰ", link: "Ula/fazul-adab-1.pdf"},
+    {title: "شرح فیض الادب اول", cat: "dars", jamat: "اولیٰ", link: "Ula/sharh-fazul-adab-awwal.pdf"},
+    {title: "گلستاں", cat: "dars", jamat: "اولیٰ", link: "Ula/gulzar-e-dabista.pdf"},
+    {title: "شرح گلستاں", cat: "dars", jamat: "اولیٰ", link: "Ula/sharah-gulzare-dabista.pdf"},
+    {title: "بوستاں", cat: "dars", jamat: "اولیٰ", link: "Ula/bowastan.pdf"},
+    {title: "شرح بوستاں", cat: "dars", jamat: "اولیٰ", link: "Ula/sharh-bowstan.pdf"},
+    {title: "قواعد الصرف اول", cat: "dars", jamat: "اولیٰ", link: "Ula/qawaid-sarf-auwwal.pdf"},
+    {title: "قواعد النحو", cat: "dars", jamat: "اولیٰ", link: "Ula/qawaid-nahw.pdf"},
+    {title: "منہاج العربیہ سوم", cat: "dars", jamat: "اولیٰ", link: "Ula/minhazul-arebia-soom.pdf"},
+    {title: "شرح منہاج العربیہ سوم", cat: "dars", jamat: "اولیٰ", link: "Ula/sharh-minhazul-arebia-soom.pdf"},
+    {title: "بہار شریعت", cat: "dars", jamat: "اولیٰ", link: "Ula/bahar-e-shariat-jild.pdf"},
+    {title: "قانون شریعت", cat: "dars", jamat: "اولیٰ", link: "Ula/qanoon-e-shariat.pdf"},
+    {title: "فیض الادب دوم", cat: "dars", jamat: "اولیٰ", link: "Ula/fazul-adab-2.pdf"},
+    {title: "شرح فیض الادب دوم", cat: "dars", jamat: "اولیٰ", link: "Ula/sharah-fazul-adab-doom.pdf"},
+    {title: "قراءۃ کورس", cat: "dars", jamat: "اولیٰ", link: "Ula/mukammal-qiraut-corse.pdf"},
+    {title: "معرفۃالتجوید", cat: "dars", jamat: "اولیٰ", link: "Ula/marfhut-tajweed.pdf"},
+    {title: "اسلامی اخلاق وآداب", cat: "dars", jamat: "اولیٰ", link: "Ula/islami-ikhlaqe-adab.pdf"},
+    {title: "سخن ِنو", cat: "dars", jamat: "اولیٰ", link: "Ula/sukhan-noo.pdf"},
+    {title: "القراءۃ الرشیدہ۔اول", cat: "dars", jamat: "اولیٰ", link: "Ula/القراءۃالرشیدہ-اول.pdf"},
+    {title: "شرح القراءۃ الرشیدہ۔اول", cat: "dars", jamat: "اولیٰ", link: "Ula/شرح-القراءۃالرشیدہ-اول.pdf"},
+    {title: "القراءۃالرشیدہ-ثانی", cat: "dars", jamat: "اولیٰ", link: "Ula/القراءۃالرشیدہ-ثانی.pdf"},
+    {title: "شرح القراءۃالرشیدہ-ثانی", cat: "dars", jamat: "Ula/sharah-qiraurur-rasheedh-doom.pdf"},
+    {title: "مصباح الانشاء۔اول", cat: "dars", jamat: "اولیٰ", link: "Ula/misbahul-insha-auwwal.pdf"},
+    {title: "شرح‌مصباح‌الانشاء‌اول", cat: "dars", jamat: "اولیٰ", link: "Ula/sharah-misbahul-insha-auwwal.pdf"},
+    {title: "خلاصۃ النحو۔مکمل", cat: "dars", jamat: "اولیٰ", link: "Ula/khulastun-nahw-mukammal.pdf"},
+    {title: "بنیادی‌عقاںٔد‌اور‌معلومات اہلسنت", cat: "dars", jamat: "اولیٰ", link: "Ula/bunyadi-aqaid-maloomat-ahle-sunnat.pdf"},
+    {title: "نصاب الصرف", cat: "dars", jamat: "اولیٰ", link: "Ula/nisabus-sarf.pdf"},
+    {title: "حل‌تمارین‌نصاب‌الصرف", cat: "dars", jamat: "اولیٰ", link: "Ula/hal-tamareen-nisabus-sarf.pdf"},
+    {title: "القراءۃ‌الراشدہ۔اول", cat: "dars", jamat: "اولیٰ", link: "Ula/القراءۃالراشدہ-اول.pdf"},
+    {title: "شرح‌القراءۃالراشدہ‌اول", cat: "dars", jamat: "اولیٰ", link: "شرح‌القراءۃالراشدہ‌اول.pdf"},
+    {title: "القراءۃ‌الراشدہ۔دوم", cat: "dars", jamat: "اولیٰ", link: "Ula/القراءۃالراشدہ-دوم.pdf"},
+    {title: "شرح القراءۃ الراشدہ۔دوم", cat: "dars", jamat: "اولیٰ", link: "Ula/شرح‌القراءۃالراشدہ-دوم.pdf"},
+    {title: "النحو الواضع۔اول", cat: "dars", jamat: "اولیٰ", link: "Ula/nahwul-wazh-auwwal.pdf"},
+    {title: "شرح‌النحوالواضع۔اول", cat: "dars", jamat: "اولیٰ", link: "Ula/sharh-nahwul-wazh-awwal.pdf"},
+    {title: "معلم الانشاء۔اول", cat: "dars", jamat: "اولیٰ", link: "Ula/mu-allimul-insha-awwal.pdf"},
+    {title: "شرح‌معلم‌الانشاء‌اول", cat: "dars", jamat: "اولیٰ", link: "Ula/sharh-mu-allimul-insha-awwal.pdf"},
+    {title: "بدایۃ الصرف", cat: "dars", jamat: "اولیٰ", link: "Ula/bidaytus-sarf.pdf"},
+    {title: "معرفۃ القرآن", cat: "dars", jamat: "اولیٰ", link: "Ula/mareftul-quran.pdf"},
+    {title: "ہمارا اسلام", cat: "dars", jamat: "اولیٰ", link: "Ula/hamara-islam.pdf"},
+    
+    {title: "نور الایضاح", cat: "dars", jamat: "ثانیہ", link: "sania/norul-aeza.pdf"},
+    {title: "شرح نور الایضاح", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-norul-aezah.pdf"},
+    {title: "ہدایۃ النحو", cat: "dars", jamat: "ثانیہ", link: "sania/hidaytun-nahw.pdf"},
+    {title: "شرح ہدایۃ النحو", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-hidaytun-nahw.pdf"},
+    {title: "شرح ماںٔۃ عامل", cat: "dars", jamat: "ثانیہ", link: "sania/shrah-maitun-aamil.pdf"},
+    {title: "شرح۔ شرح ماںٔۃعامل", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-maitun-aamil.pdf"},
+    {title: "مجانی الادب", cat: "dars", jamat: "ثانیہ", link: "sania/mjanil-adab.pdf"},
+    {title: "شرح مجانی الادب", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-majanil-adab.pdf"},
+    {title: "مصباح الانشاء۔اول", cat: "dars", jamat: "ثانیہ", link: "sania/misbahul-insha-awwal.pdf"},
+    {title: "شرح مصباح الانشاء۔اول", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-misbahul-insha-awwal.pdf"},
+    {title: "کبری", cat: "dars", jamat: "ثانیہ", link: "sania/kubra.pdf"},
+    {title: "شرح کبری", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-kubra.pdf"},
+    {title: "قواعد املا ومضمون نویسی", cat: "dars", jamat: "ثانیہ", link: "sania/qawaid-imla-mazmoon-nawesi.pdf"},
+    {title: "قواعد الصرف۔دوم", cat: "dars", jamat: "ثانیہ", link: "sania/qawaid-sarf-doom.pdf"},
+    {title: "کافیۃ النحو", cat: "dars", jamat: "ثانیہ", link: "sania/kafiytun-nahw.pdf"},
+    {title: "ترجمہ کافیۃ النحو", cat: "dars", jamat: "ثانیہ", link: "sania/tarjuma-kafiytun-nahw.pdf"},
+    {title: "ازہارالعرب", cat: "dars", jamat: "ثانیہ", link: "sania/azharul-arab.pdf"},
+    {title: "شرح ازہارالعرب", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-azharul-arab.pdf"},
+    {title: "مرقات", cat: "dars", jamat: "ثانیہ", link: "sania/mirqat.pdf"},
+    {title: "شرح مرقات۔اردو", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-mirqat.pdf"},
+    {title: "ایجادات کی کہانی", cat: "dars", jamat: "ثانیہ", link: "sania/ایجادات-کی-کہانی.pdf"},
+    {title: "سخنِ نو", cat: "dars", jamat: "ثانیہ", link: "sania/sukhan-noo.pdf"},
+    {title: "علم الصیغہ", cat: "dars", jamat: "ثانیہ", link: "sania/ilmus-saga.pdf"},
+    {title: "شرح علم الصیغہ", cat: "dars", jamat: "ثانیہ", link: "sania/اغراض-علم-الصیغہ .pdf"},
+    {title: "شعر باستاں", cat: "dars", jamat: "ثانیہ", link: "sania/sher-bastan.pdf"},
+    {title: "ترجمہ شعرباستاں", cat: "dars", jamat: "ثانیہ", link: "sania/tarjuma-sher-bastan.pdf"},
+    {title: "خاصیات ابواب الصرف", cat: "dars", jamat: "ثانیہ", link: "sania/khasiyat-abwabus-sarf.pdf"},
+    {title: "حل تمارین ابواب الصرف", cat: "dars", jamat: "ثانیہ", link: "sania/ilmus-saga.pdf"},
+    {title: "فیض الادب دوم", cat: "dars", jamat: "ثانیہ", link: "sania/فیض-الادب-دوم.pdf"},
+    {title: "شرح‌فیض‌الادب‌دوم", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-fazul-adab-doom.pdf"},
+    {title: "اسلامی اخلاق۔و۔آداب", cat: "dars", jamat: "ثانیہ", link: "sania/islami-ikhlaqe-adab.pdf"},
+    {title: "معرفۃالوقف۔ومعرفۃالرسوم", cat: "dars", jamat: "ثانیہ", link: "sania/marftul-waqf-marftur-rsoom.pdf"},
+    {title: "اتحاف‌المسلم", cat: "dars", jamat: "ثانیہ", link: "sania/ithaful-muslim.pdf"},
+    {title: "شرح‌اتحاف‌المسلم", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-ithaful-muslim.pdf"},
+    {title: "جواہر‌المنطق", cat: "dars", jamat: "ثانیہ", link: "sania/zawahirul-mantik.pdf"},
+    {title: "نصاب‌المنطق", cat: "dars", jamat: "ثانیہ", link: "sania/nisabul-mantik.pdf"},
+    {title: "صحابیات‌وصالحات‌کے‌اعلی‌اوصاف", cat: "dars", jamat: "ثانیہ", link: "sania/sahabiyat-salihat-ke-ala-ausaf.pdf"},
+    {title: "ظاہری‌گناہوں‌کی‌معلومات", cat: "dars", jamat: "ثانیہ", link: "sania/jahiri-gunahon-ki-maloomat.pdf"},
+    {title: "الاربعین‌النوویہ", cat: "dars", jamat: "ثانیہ", link: "sania/arbueen-novvia.pdf"},
+    {title: "الاربعین‌نووی", cat: "dars", jamat: "ثانیہ", link: "sania/arbueen-nowwi-sharh.pdf"},
+    {title: "باطنی بیماریوں کی معلومات", cat: "dars", jamat: "ثانیہ", link: "sania/bateni-bemariyon-ki-maloomat.pdf"},
+    {title: "انوار‌الحدیث", cat: "dars", jamat: "ثانیہ", link: "sania/anwarul-hadees.pdf"},
+    {title: "قلیوبی", cat: "dars", jamat: "ثانیہ", link: "sania/qalyoobi.pdf"},
+    {title: "شرح‌قلیوبی", cat: "dars", jamat: "ثانیہ", link: "sania/sharh-qulyoobi.pdf"},
+    {title: "الیاقوت‌النفیس", cat: "dars", jamat: "ثانیہ", link: "sania/yaqootun-nafees.pdf"},
+
+    {title: "قدوری‌شریف", cat: "dars", jamat: "ثالثہ", link: "salesa/qudoori-shareef.pdf"},
+    {title: "انوارالقدوری‌تین‌جلد", cat: "dars", jamat: "ثالثہ", link: "salesa/anwarul-qudoori-teen-jild.pdf"},
+    {title: "کافیۃ‌النحو", cat: "dars", jamat: "ثالثہ", link: "salesa/kafiytun-nahw.pdf"},
+    {title: "ترجمہ‌کافیۃ‌النحو", cat: "dars", jamat: "ثالثہ", link: "salesa/tarjuma-kafiytun-nahw.pdf"},
+    {title: "مصباح‌الانشاء‌دوم", cat: "dars", jamat: "ثالثہ", link: "salesa/misbahul-insha-doom.pdf"},
+    {title: "شرح‌مصباح‌الانشاء‌دوم", cat: "dars", jamat: "ثالثہ", link: "salesa/sharh-misbahul-insha-doom.pdf"},
+    {title: "شرح‌تہذیب", cat: "dars", jamat: "ثالثہ", link: "salesa/sharh-tahzeeb.pdf"},
+    
+    {title: "تنویرالتہذیب", cat: "dars", jamat: "ثالثہ", link: "salesa/tanweer-tahzeeb.pdf"},
+    {title: "مںٔوطا‌امام‌محمد", cat: "dars", jamat: "ثالثہ", link: "salesa/mouta-imam-muhammad.pdf"},
+    {title: "شرح‌مںٔوطا‌امام‌محمد", cat: "dars", jamat: "salesa/sharh-mota-imam-muhammad.pdf"},
+    {title: "دروس‌البلاغۃ", cat: "dars", jamat: "ثالثہ", link: "salesa/durusul-balaga.pdf"},
+    {title: "شرح‌دروس‌البلاغۃ", cat: "dars", jamat: "salesa/sharh-droosul-balaga.pdf"},
+    {title: "تاریخ‌اسلام‌اول", cat: "dars", jamat: "ثالثہ", link: "salesa/tareekh-islam-awwal.pdf"},
+    {title: "معین‌العروض‌والقوافی", cat: "dars", jamat: "ثالثہ", link: "salesa/mueenul-urooz-walqwafi.pdf"},
+    {title: "قطبی‌تصدیقات", cat: "dars", jamat: "ثالثہ", link: "salesa/qutbi-tasdeeqat.pdf"},
+    {title: "شرح‌قطبی‌تصدیقات", cat: "dars", jamat: "salesa/sharh-qutbi-tasdeeqat.pdf"},
+    {title: "تنویر‌الاثار‌اول‌دوم", cat: "dars", jamat: "ثالثہ", link: "salesa/tanweer-ul-asar-awwal-doom.pdf"},
+    {title: "الیاقوت‌النفیس", cat: "dars", jamat: "ثالثہ", link: "salesa/yaqootun-nafees.pdf"},
+    {title: "امداداللبیب", cat: "dars", jamat: "ثالثہ", link: "salesa/imdadul-labeeb.pdf"},
+    {title: "شرح‌امداد‌اللبیب", cat: "dars", jamat: "salesa/sharh-imdadul-labeeb.pdf"},
+    {title: "اصول‌الشاشی", cat: "dars", jamat: "ثالثہ", link: "salesa/usoolus-shashi.pdf"},
+    {title: "شرح‌اصول‌الشاشی", cat: "dars", jamat: "sharh-usoolus-shashi.pdf"},
+    {title: "شرح‌جامی", cat: "dars", jamat: "ثالثہ", link: "salesa/sharh-jami.pdf"},
+    {title: "شرح‌شرح‌الجامی", cat: "dars", jamat: "salesa/sharh-sharh-jami.pdf"},
+    {title: "تمہید‌ایمان", cat: "dars", jamat: "ثالثہ", link: "salesa/tamheed-imaan.pdf"},
+    {title: "پردے‌کے‌بارے‌میں‌سوال‌و‌جواب", cat: "dars", jamat: "ثالثہ", link: "salesa/pardeke-bare-sawal-jawab.pdf"},
+    {title: "کافیہ", cat: "dars", jamat: "ثالثہ", link: "salesa/kafiya.pdf"},
+    {title: "شرح‌کافیہ", cat: "dars", jamat: "salesa/sharh-kafia.pdf"},
+    {title: "فتح‌المنّان‌فی‌تاںٔید‌مذھب‌النعمان", cat: "dars", jamat: "ثالثہ", link: "salesa/fathul-mannan-fi-mazhbun-numan.pdf"},
+    {title: "حیات‌صحابہ‌کے‌درخشاں‌پہلو", cat: "dars", jamat: "ثالثہ", link: "salesa/hyate-sahaba-ke-darakhsha-pahlu.pdf"},
+    {title: "ازہار‌العرب", cat: "dars", jamat: "ثالثہ", link: "salesa/azharur-arab.pdf"},
+    {title: "شرح‌ازہار‌العرب", cat: "dars", jamat: "salesa/sharh-azharur-arab.pdf"},
+    {title: "مصباح‌الانشاء‌دوم", cat: "dars", jamat: "ثالثہ", link: "salesa/misbahul-imsha-doom.pdf"},
+    {title: "شرح‌مصباح‌الانشاء‌دوم", cat: "dars", jamat: "salesa/sharh-misbahul-insha-doom.pdf"},
+    {title: "شرح‌شذور‌الذہب", cat: "dars", jamat: "ثالثہ", link: "salesa/شرح-شذور-الذہب.pdf"},
+    {title: "ترجمہ‌شذور‌الذہب", cat: "dars", jamat: "ثالثہ", link: "salesa/knozul-arab-tarjuma-shuzooruz-zahab.pdf"},
+
+    {title: "ریاض‌الصالحین", cat: "dars", jamat: "رابعہ", link: "rabia/riyazus-saliheen.pdf"},
+    {title: "شرح‌ریاض‌الصالحین", cat: "dars", jamat: "رابعہ", link: "rabia/شرح-ریاض-الصالحین۴جلد.pdf"},
+    {title: "اصول‌الشاشی", cat: "dars", jamat: "رابعہ", link: "rabia/usoolus-shashi.pdf"},
+    {title: "شرح‌اصول‌الشاشی", cat: "rabia/sharh-usoolus-shashi.pdf"},
+    {title: "قطبی‌تصورات", cat: "dars", jamat: "رابعہ", link: "rabia/qutbi-tasoorat.pdf"},
+    {title: "شرح‌قطبی‌تصورات", cat: "dars", jamat: "rabia/sharh-qutbi-tasoorat.pdf"},
+    {title: "میر‌قطبی", cat: "dars", jamat: "رابعہ", link: "rabia/meer-qutbi.pdf"},
+    {title: "شرح‌میر‌قطبی", cat: "dars", jamat: "sharh-meer-qutbi.pdf"},
+    {title: "مصباح‌الانشاء‌سوم", cat: "dars", jamat: "رابعہ", link: "rabia/مصباح‌-الانشاء-سوم.pdf"},
+    {title: "شرح‌مصباح‌الانشاء‌سوم", cat: "dars", jamat: "sharh-misbahul-insha-soom.pdf"},
+    {title: "منہاح‌العابدین", cat: "dars", jamat: "رابعہ", link: "rabia/minhazul-aabideen.pdf"},
+    {title: "ترجمہ‌منہاج‌العابدین", cat: "dars", jamat: "tarjuma-minhazul-aabideen.pdf"},
+    {title: "شرح‌وقایہ‌اول", cat: "dars", jamat: "رابعہ", link: "rabia/sharh-wqaya-awwal.pdf"},
+    {title: "شرح‌شرح‌الوقایہ‌اول", cat: "dars", jamat: "sharh-sharhul-waqaya.pdf"},
+    {title: "ہدایۃ‌الحکمت", cat: "dars", jamat: "رابعہ", link: "rabia/hidaytul-hikmat.pdf"},
+    {title: "تحقیق‌الحکمۃ‌فی‌حل‌ہدایۃالحکمۃ", cat: "dars", jamat: "tahqeequl-hikmth-fi-hal-hidaytul-hikmth.pdf"},
+    {title: "دیوان‌متنبّی", cat: "dars", jamat: "رابعہ", link: "rabia/deewane-mutnabbi.pdf"},
+    {title: "شرح‌دیوان‌متنبّی", cat: "dars", jamat: "sharh-deewane-mutnabbi.pdf"},
+    {title: "تاریخ‌اسلام‌دوم", cat: "dars", jamat: "رابعہ", link: "rabia/tareekh-islam-doom.pdf"},
+    {title: "تاریخ‌اسلام‌سوم", cat: "dars", jamat: "tarrekh-islam-soom.pdf"},
+    {title: "منثورات", cat: "dars", jamat: "رابعہ", link: "rabia/mansoorat.pdf"},
+    {title: "شرح‌منثورات", cat: "شرح-منثورات.pdf"},
+    {title: "شرح‌جامی", cat: "dars", jamat: "رابعہ", link: "rabia/sharh-jami.pdf"},
+    {title: "شرح‌شرح‌الجامی", cat: "sharh-sharh-jami.pdf"},
+    {title: "بدایۃالحکمۃ", cat: "dars", jamat: "رابعہ", link: "rabia/bidaytul-hikmath.pdf"},
+
+    {title: "شرح‌وقایہ‌ثانی", cat: "dars", jamat: "خامسہ", link: "khamisa/sharh-waqaya-sani.pdf"},
+    {title: "توضیح‌الوقایہ‌فی‌حل‌شرح‌الوقایہ", cat: "dars", jamat: "خامسہ", link: "tozehatul-waqayah-fee-hal-sharhul-waqayh.pdf"},
+    {title: "شرح‌عقاںٔد‌نسفی", cat: "dars", jamat: "خامسہ", link: "khamisa/sharh-aqaid-nasfi.pdf"},
+    {title: "تلخیص‌المفتاح", cat: "dars", jamat: "خامسہ", link: "khamisa/talkheesul-miftah.pdf"},
+    {title: "شرح‌تلخیص‌المفتاح", cat: "sharh-talkheesul-miftah.pdf"},
+
+    {title: "جلالین شریف", cat: "dars", jamat: "سادسہ", link: "sadisa/jalalayn.pdf"},
+    {title: "زبدۃالاتقان", cat: "dars", jamat: "سادسہ", link: "sadisa/zubdat-ul-itqan.pdf"},
+    {title: "الهد١يه", cat: "dars", jamat: "سادسہ", link: "sadisa/hidayah.pdf"},
+    {title: "بهار شريعت", cat: "dars", jamat: "سادسہ", link: "sadisa/bahar-shariat.pdf"},
+    {title: "مختصر المعانی", cat: "dars", jamat: "سادسہ", link: "sadisa/mukhtasar-ul-maani.pdf"},
+    {title: "مقامات الحریری", cat: "dars", jamat: "سادسہ", link: "sadisa/maqamat.pdf"},
+    {title: "توضیحات الانشاء", cat: "dars", jamat: "سادسہ", link: "sadisa/towdeehat.pdf"},
+    {title: "تدوین حدیث", cat: "dars", jamat: "سادسہ", link: "sadisa/tadween-hadees.pdf"},
+    {title: "سراجی", cat: "dars", jamat: "سادسہ", link: "sadisa/siraji.pdf"},
+    {title: "البلاغۃ الواضحۃ", cat: "dars", jamat: "سادسہ", link: "sadisa/balagha-wadiha.pdf"},
+    {title: "ترمزی شریف", cat: "dars", jamat: "سابعہ", link: "sabia/tirmizi.pdf"},
+    {title: "حسامی", cat: "dars", jamat: "سابعہ", link: "sabia/hosami.pdf"},
+    {title: "دیوان حماسہ", cat: "dars", jamat: "سابعہ", link: "sabia/deewan-hamasa.pdf"},
+    {title: "مصباح الانشاء ثالث", cat: "dars", jamat: "سابعہ", link: "sabia/misbah-3.pdf"},
+    {title: "المبین", cat: "dars", jamat: "سابعہ", link: "sabia/al-mubeen.pdf"},
+    {title: "ابو داؤد شریف", cat: "dars", jamat: "سابعہ", link: "sabia/abu-dawood.pdf"},
+    {title: "تو ِضیح", cat: "dars", jamat: "سابعہ", link: "sabia/towdeeh.pdf"},
+    {title: "حداںٔق بخشش", cat: "taqreer", jamat: "نعت", link: "taqreer/hadaiq-e-bakhshish.pdf"},
+    {title: "سامان بخشش", cat: "taqreer", jamat: "نعت", link: "taqreer/saman-e-bakhshish.pdf"},
+    {title: "کلیات حسن", cat: "taqreer", jamat: "نعت", link: "taqreer/kulliyat-e-hasan.pdf"},
+    {title: "سلاموں کا مجموعہ", cat: "taqreer", jamat: "نعت", link: "taqreer/salam-collection.pdf"},
+    {title: "خطبات بنگال", cat: "taqreer", jamat: "تقریر", link: "taqreer/khutbat-bengal.pdf"},
+    {title: "خطبات نیپال", cat: "taqreer", jamat: "تقریر", link: "taqreer/khutbat-nepal.pdf"},
+    {title: "نعیمی خطبات", cat: "taqreer", jamat: "تقریر", link: "taqreer/naeemi-khutbat.pdf"},
+    {title: "مشکوٰۃ شریف", cat: "hadees", jamat: "", link: "hadees/mishkat.pdf"},
+    {title: "مسنون دعائیں", cat: "dua", jamat: "", link: "dua/masnoon-duas.pdf"}
   ];
 
-  function showHomePage() { hideAllPages(); document.getElementById('home-page').style.display = 'block'; }
-  function showJamatPage() { hideAllPages(); document.getElementById('jamat-page').style.display = 'block'; }
-  function showtaqreerPage() { hideAllPages(); document.getElementById('taqreer-page').style.display = 'block'; }
+  // ڈاؤن لوڈ شدہ کتب کا ڈیٹا (یہاں ہم نے ایک فرضی ID بھی شامل کی ہے تاکہ ڈیلیٹ کرنا آسان ہو)
+  let downloadedBooks = [
+    {id: 1, title: "فارسی کی پہلی (آف لائن)", link: "adadia/farsi-ki-pahli.pdf"},
+    {id: 2, title: "شرح فارسی کی پہلی (آف لائن)", link: "adadia/sharh-farsi-ki-pahli.pdf"}
+  ];
+
+  let currentFilteredBooks = []; 
+
+  function pushAppState() {
+    window.history.pushState({ page: "sub" }, "Sub Page", "#subPage");
+  }
+
+  function showHomePage() { 
+    hideAllPages(); 
+    document.getElementById('home-page').style.display = 'block'; 
+    clearSearchInputs();
+  }
+  
+  function showJamatPage() { 
+    pushAppState(); 
+    hideAllPages(); 
+    document.getElementById('jamat-page').style.display = 'block'; 
+  }
+  
+  function showtaqreerPage() { 
+    pushAppState(); 
+    hideAllPages(); 
+    document.getElementById('taqreer-page').style.display = 'block'; 
+  }
+
+  function showDownloadPage() {
+    pushAppState();
+    hideAllPages();
+    document.getElementById('download-page').style.display = 'block';
+    renderDownloads(downloadedBooks);
+  }
+  
   function hideAllPages() { document.querySelectorAll('.page').forEach(p => p.style.display = 'none'); }
 
+  function clearSearchInputs() {
+    document.querySelectorAll('.search-box').forEach(input => input.value = "");
+    filterButtons('jamat-page', '');
+    filterButtons('taqreer-page', '');
+  }
+
+  function filterButtons(pageId, query) {
+    const buttons = document.querySelectorAll(`#${pageId} .btn-container button`);
+    buttons.forEach(btn => {
+      if (btn.innerText.toLowerCase().includes(query.toLowerCase())) {
+        btn.style.display = "block";
+      } else {
+        btn.style.display = "none";
+      }
+    });
+  }
+
   function renderBooks(filterValue, type) {
+    pushAppState(); 
     hideAllPages();
     const listPage = document.getElementById('books-list-page');
-    const listContainer = document.getElementById('books-list');
-    const titleHeader = document.getElementById('list-title');
-    listContainer.innerHTML = "";
+    document.getElementById('search-books').value = ""; 
+    document.getElementById('list-title').innerText = filterValue;
+
+    currentFilteredBooks = allBooks.filter(b => type === 'jamat' ? b.jamat === filterValue : (type === 'taqreer' ? b.jamat === filterValue : b.cat === filterValue));
     
-    titleHeader.innerText = filterValue;
+    displayBooks(currentFilteredBooks);
 
-    const filtered = allBooks.filter(b => type === 'jamat' ? b.jamat === filterValue : (type === 'taqreer' ? b.jamat === filterValue : b.cat === filterValue));
-
-    if(filtered.length === 0) {
-      listContainer.innerHTML = "<p style='grid-column: 1/3;'>جلد شامل کی جائیں گی ان شاء اللہ</p>";
-    } else {
-      filtered.forEach(book => {
-        const btn = document.createElement('button');
-        btn.innerHTML = "📖 " + book.title;
-        btn.onclick = () => openBook(book.title, book.link);
-        listContainer.appendChild(btn);
-      });
-    }
-
-    // واپسی کا بٹن سیٹ کریں
     const backBtn = document.getElementById('dynamic-back-btn');
     if (type === 'jamat') {
         backBtn.onclick = showJamatPage;
@@ -349,22 +541,124 @@ img {
     listPage.style.display = 'block';
   }
 
+  function displayBooks(booksArray) {
+    const listContainer = document.getElementById('books-list');
+    listContainer.innerHTML = "";
+    if(booksArray.length === 0) {
+      listContainer.innerHTML = "<p style='grid-column: 1/3;'>کوئی کتاب نہیں ملی</p>";
+    } else {
+      booksArray.forEach(book => {
+        const btn = document.createElement('button');
+        btn.innerHTML = "📖 " + book.title;
+        btn.onclick = () => openBook(book.title, book.link);
+        listContainer.appendChild(btn);
+      });
+    }
+  }
+
+  function filterBooksList(query) {
+    const filtered = currentFilteredBooks.filter(b => b.title.toLowerCase().includes(query.toLowerCase()));
+    displayBooks(filtered);
+  }
+
+  // ڈاؤن لوڈ کی گئی کتابوں کو رینڈر کرنے کا جدید فنکشن بشمول ریمو بٹن
+  function renderDownloads(booksArray) {
+    const container = document.getElementById('downloads-list');
+    const msg = document.getElementById('no-download-msg');
+    container.innerHTML = "";
+    
+    if(booksArray.length === 0) {
+      msg.style.display = "block";
+    } else {
+      msg.style.display = "none";
+      booksArray.forEach(book => {
+        // ایک ڈیپازٹ ریپر ڈِو بنانا تاکہ بٹن ترتیب میں رہیں
+        const wrapper = document.createElement('div');
+        wrapper.className = "download-item-wrapper";
+
+        // کتاب پڑھنے کا بٹن
+        const readBtn = document.createElement('button');
+        readBtn.className = "download-book-btn";
+        readBtn.innerHTML = "📥 " + book.title;
+        readBtn.onclick = () => openBook(book.title, book.link);
+
+        // کتاب حذف (Remove) کرنے کا بٹن
+        const removeBtn = document.createElement('button');
+        removeBtn.className = "remove-book-btn";
+        removeBtn.innerHTML = "❌";
+        removeBtn.title = "حذف کریں";
+        removeBtn.onclick = () => removeDownloadedBook(book.id);
+
+        wrapper.appendChild(readBtn);
+        wrapper.appendChild(removeBtn);
+        container.appendChild(wrapper);
+      });
+    }
+  }
+
+  // کتاب کو ڈاؤن لوڈ لسٹ سے ڈیلیٹ کرنے کا فنکشن
+  function removeDownloadedBook(id) {
+    if(confirm("کیا آپ اس کتاب کو ڈاؤن لوڈ لسٹ سے حذف کرنا چاہتے ہیں؟")) {
+      downloadedBooks = downloadedBooks.filter(book => book.id !== id);
+      renderDownloads(downloadedBooks); // اسکرین کو فوراً اپڈیٹ کریں
+    }
+  }
+
+  function filterDownloadsList(query) {
+    const filtered = downloadedBooks.filter(b => b.title.toLowerCase().includes(query.toLowerCase()));
+    renderDownloads(filtered);
+  }
+
+  // جدید پی ڈی ایف اوپنر فنکشن 
   function openBook(title, link) {
-    if(link === "#" || link === "URL") {
+    if(!link || link === "#" || link === "") {
         alert("یہ کتاب ابھی دستیاب نہیں ہے۔");
         return;
     }
-    document.getElementById('viewing-book-title').innerText = title;
-    document.getElementById('pdf-frame').src = link;
-    document.getElementById('pdf-view-page').style.display = 'block';
+    
+    /* 
+      نوٹ برائے PDF.js: اگر آپ مستقبل میں موزیلا کا PDF.js Viewer اپنی ایپ کے فولڈر میں شامل کرتے ہیں،
+      تو آپ نیچے والے کوڈ کو چالو (Uncomment) کر سکتے ہیں:
+      
+      let pdfJsViewerPath = "pdfjs/web/viewer.html?file=";
+      window.open(pdfJsViewerPath + encodeURIComponent(link), '_blank', 'location=no');
+      return;
+    */
+
+    // فی الحال یہ فائل کو اسمارٹ فون کے اپنے پی ڈی ایف ریڈر/براؤزر ونڈو میں براہ راست کھولے گا
+    window.open(link, '_system', 'location=yes');
   }
 
-  function closeViewer() {
-    document.getElementById('pdf-view-page').style.display = 'none';
-    document.getElementById('pdf-frame').src = "";
-  }
+  // اینڈرائیڈ ہارڈ ویئر بیک بٹن ہینڈلر
+  window.onpopstate = function (event) {
+    const booksList = document.getElementById('books-list-page');
+    const jamatPage = document.getElementById('jamat-page');
+    const taqreerPage = document.getElementById('taqreer-page');
+    const downloadPage = document.getElementById('download-page');
+
+    if (booksList.style.display === 'block') {
+        const title = document.getElementById('list-title').innerText;
+        if (title === "نعت" || title === "تقریر") {
+            showtaqreerPage();
+        } else if (["اعدادیہ","اولیٰ","ثانیہ","ثالثہ","رابعہ","خامسہ","سادسہ","سابعہ"].includes(title)) {
+            showJamatPage();
+        } else {
+            showHomePage();
+        }
+    } 
+    else if (jamatPage.style.display === 'block' || taqreerPage.style.display === 'block' || downloadPage.style.display === 'block') {
+        showHomePage();
+    } 
+    else {
+        if (navigator.app && navigator.app.exitApp) {
+            navigator.app.exitApp();
+        } else if (navigator.device && navigator.device.exitApp) {
+            navigator.device.exitApp();
+        } else {
+            window.history.back();
+        }
+    }
+  };
 </script>
-
-
 </body>
-</html>
+</html> 
